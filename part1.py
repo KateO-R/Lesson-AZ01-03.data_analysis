@@ -1,16 +1,19 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
-data = {
-    'Age': [23, 30, 22, 27, 21, 20, 29, 28, 22, 25],
-    'Salary': [54000, 58000, 60000, 52000, 55000, 59000, 51000, 49000, 53000, 61000],
-}
-
+data = {'value': [1, 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 7, 55]}
 df = pd.DataFrame(data)
 
-print(f'Average age - {df['Age'].mean()}')
-print(f'Median age - {df['Age'].median()}')
-print(f'Standard deviation of the age - {df['Age'].std()}')
+df.boxplot(column='value')
+plt.show()
 
-print(f'Average salary - {df['Salary'].mean()}')
-print(f'Median salary - {df['Salary'].median()}')
-print(f'Standard deviation of the salary - {df['Salary'].std()}')
+Q1 = df['value'].quantile(0.25)
+Q3 = df['value'].quantile(0.75)
+IQR = Q3-Q1
+
+downside = Q1 - 1.5 * IQR
+upside = Q3 + 1.5 * IQR
+
+df_new = df[(df['value'] >= downside)&(df['value'] <= upside)]
+df_new.boxplot(column='value')
+plt.show()
